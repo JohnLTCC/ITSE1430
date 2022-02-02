@@ -7,7 +7,7 @@ namespace MovieLib.ConsoleHost
         static void Main ( string[] args )
         {
             char input = DisplayMenu();
-
+            
             //TODO: Handle input
             if (input == 'A')
                 AddMovie();
@@ -20,22 +20,52 @@ namespace MovieLib.ConsoleHost
             int releaseYear = ReadInt32("Enter release year: ", 1900);
             string rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
             string genre = ReadString("Enter a genre (optional): ", false);
-            bool isColor;
+            bool isColor = ReadBoolean("in color (Y/N)? ");
             string description = ReadString("Enter a description (optional): ", false);
+        }
+
+        private static bool ReadBoolean ( string message )
+        {
+            Console.Write(message);
+            Console.WriteLine();
+
+            do
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                if (key.Key == ConsoleKey.Y)
+                {
+                    Console.WriteLine("Y");
+                    return true;
+                }
+                else if (key.Key == ConsoleKey.N)
+                {
+                    Console.WriteLine("N");
+                    return false;
+                }
+
+                Console.WriteLine("Invalid Input. Must enter Y/N.");
+            } while (true);
         }
 
         private static int ReadInt32 ( string message, int minimumValue )
         {
             Console.Write(message);
 
-            string input = Console.ReadLine();
+            while (true)
+            {
+                string input = Console.ReadLine();
 
-            //TODO: Validate
-            int result = Int32.Parse(input);
-            if (result >= minimumValue)
-                return result;
+                //TODO: Validate
+                // int result = Int32.Parse(input);
+                //int result;
+                //if (Int32.TryParse(input, out result))
+                if (Int32.TryParse(input, out int result))
+                    if (result >= minimumValue)
+                        return result;
 
-            return -1;
+                Console.WriteLine("Invalid Input. Must be a whole number and greater than " + minimumValue);
+            };
         }
 
         //Function naming rules

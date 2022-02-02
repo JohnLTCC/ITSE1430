@@ -51,6 +51,31 @@ namespace Demo
 
             //Definitely assigned
             intValue = hoursWorked;
+
+            //Arithmatic Operators
+            int x = 1, y = 2, z = 3;
+
+            z = x + y;
+            z = x - y;
+            z = x * y;
+            z = x / y;
+            z = x % y;
+            // X++ prefix increment
+            // temp = x;
+            // x += 1;
+            // temp;
+            x++;
+
+            // ++X postfix increment
+            // x += 1
+            // x
+            ++x;
+
+            //X++ prefix decrement
+            x--;
+
+            //++X postfix decrement
+            --x;
         }
     }
 }
