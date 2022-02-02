@@ -6,7 +6,12 @@ namespace CharacterCreator.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //Story 2
+            Console.WriteLine("John lobsinger.");
+            Console.WriteLine("ITSE 1430.");
+            Console.WriteLine("Lorem Ipsum"); // TODO: Add a date
+
+            //TODO: Story 3 - Set Up Main Menu
         }
     }
 }
