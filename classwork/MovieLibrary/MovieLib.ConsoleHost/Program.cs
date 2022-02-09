@@ -6,23 +6,92 @@ namespace MovieLib.ConsoleHost
     {
         static void Main ( string[] args )
         {
-            char input = DisplayMenu();
-            
-            //TODO: Handle input
-            if (input == 'A')
-                AddMovie();
+            do
+            {
+                char input = DisplayMenu();
+
+                //Handle input
+                //if (input == 'A')
+                //    AddMovie();
+                //else if (input == 'V')
+                //    ViewMovie();
+                //else if (input == 'Q')
+                //    if (ConfirmQuit())
+                //        break; // Exits the loop
+                switch (input)
+                {
+                    // Fall through is allowed when case statement is empty
+                    case 'a':
+                    case 'A': AddMovie(); break;
+
+                    case 'v':
+                    case 'V': ViewMovie(); break;
+
+                    case 'q':
+                    case 'Q':
+                    {
+                        if (ConfirmQuit())
+                            break;
+
+                        break;
+                    };
+                    default: Console.WriteLine("Unknown option"); break;
+                };
+            } while (true);
         }
 
+        private static void ViewMovie ()
+        {
+            // TODO: Does movie exist
+            Console.WriteLine(title);
+
+            // releaseYear (duration mins) rating
+            //Formatting 1 string conacenation
+            //Console.WriteLine(releaseYear + " (" + duration + " mins) " + rating);
+
+            //Formatting 2 - string formatting
+            //Console.WriteLine("{0} ({1} mins) {2}", releaseYear, duration, rating);
+
+            //Formating 3 - String interpolation
+            Console.WriteLine($"{releaseYear} ({duration} mins) {rating}");
+
+            //genre (Color | Black/White)
+            //if(isColor)
+            //    Console.WriteLine($"{genre} (Color)");
+            //else
+            //    Console.WriteLine($"{genre} (Black/White)");
+            // Conditional operator
+            Console.WriteLine($"{genre} ({(isColor ? "Color" : "Black/White")})");
+
+            //Console.WriteLine(duration);
+            //Console.WriteLine(isColor);
+            //Console.WriteLine(rating);
+            //Console.WriteLine(genre);
+            Console.WriteLine(description);
+        }
+
+        private static bool ConfirmQuit()
+        {
+            return ReadBoolean("Are you sure you want to quit? (y/n) ");
+        }
         private static void AddMovie ()
         {
-            string title = ReadString("Enter a movie title: ", true);
-            int duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
-            int releaseYear = ReadInt32("Enter release year: ", 1900);
-            string rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
-            string genre = ReadString("Enter a genre (optional): ", false);
-            bool isColor = ReadBoolean("in color (Y/N)? ");
-            string description = ReadString("Enter a description (optional): ", false);
+            title = ReadString("Enter a movie title: ", true);
+            duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
+            releaseYear = ReadInt32("Enter release year: ", 1900);
+            rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
+            genre = ReadString("Enter a genre (optional): ", false);
+            isColor = ReadBoolean("in color (Y/N)? ");
+            description = ReadString("Enter a description (optional): ", false);
         }
+
+        static string title;
+        static int duration;
+        static int releaseYear;
+        static string rating;
+        static string genre;
+        static bool isColor;
+        static string description;
 
         private static bool ReadBoolean ( string message )
         {
@@ -54,15 +123,19 @@ namespace MovieLib.ConsoleHost
 
             while (true)
             {
-                string input = Console.ReadLine();
+                //Type inferencing - compiler infers actual type based upon usage
+                //has 0 impact on runtime behaviour
+                //string input = Console.ReadLine();
+                var input = Console.ReadLine();
 
-                //TODO: Validate
+                //Validate
                 // int result = Int32.Parse(input);
                 //int result;
                 //if (Int32.TryParse(input, out result))
-                if (Int32.TryParse(input, out int result))
-                    if (result >= minimumValue)
-                        return result;
+                //if (Int32.TryParse(input, out int result))
+                //    if (result >= minimumValue)
+                if (Int32.TryParse(input, out var result) && result >= minimumValue)
+                    return result;
 
                 Console.WriteLine("Invalid Input. Must be a whole number and greater than " + minimumValue);
             };

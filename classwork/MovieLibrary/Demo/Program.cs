@@ -6,6 +6,22 @@ namespace Demo
     {
         static void Main(string[] args)
         {
+            static void DemoStrings()
+            {
+                //Strings
+                var payRate = 8.75;
+                var payRateString = payRate.ToString();
+
+                // Excape sequences - character sequence that represents something unprintable
+                // \n - newline
+                // \t - horitontal tab
+                // \\ - literal slash
+                // \" - double quote
+                string literal = "Hello World\nBob";
+                string filePath = "C:\\windows\\system32";
+                string filePath2 = @"C:\windows\system32"; // Verbatim string - ignores escape sequences
+            }
+
             //Primitives
             //Integrals
             sbyte sbyteValue = 10;
