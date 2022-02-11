@@ -6,18 +6,20 @@ namespace MovieLib.ConsoleHost
     {
         static void Main ( string[] args )
         {
+            var done = false;
             do
             {
                 char input = DisplayMenu();
 
-                //Handle input
-                //if (input == 'A')
-                //    AddMovie();
-                //else if (input == 'V')
-                //    ViewMovie();
-                //else if (input == 'Q')
-                //    if (ConfirmQuit())
-                //        break; // Exits the loop
+                /*Handle input
+                *if (input == 'A')
+                *    AddMovie();
+                *else if (input == 'V')
+                *    ViewMovie();
+                *else if (input == 'Q')
+                *    if (ConfirmQuit())
+                *    break;  Exits the loop
+                */
                 switch (input)
                 {
                     // Fall through is allowed when case statement is empty
@@ -27,22 +29,78 @@ namespace MovieLib.ConsoleHost
                     case 'v':
                     case 'V': ViewMovie(); break;
 
+                    case 'd':
+                    case 'D': DeleteMovie(); break;
+
                     case 'q':
                     case 'Q':
                     {
                         if (ConfirmQuit())
-                            break;
+                            done = true;
 
                         break;
                     };
                     default: Console.WriteLine("Unknown option"); break;
                 };
-            } while (true);
+            } while (!done);
         }
 
+        static string title;
+        static int duration;
+        static int releaseYear;
+        static string rating;
+        static string genre;
+        static bool isColor;
+        static string description;
+
+        private static char DisplayMenu ()
+        {
+            Console.WriteLine("Movie Library");
+            //Console.WriteLine("-------------");
+            Console.WriteLine("".PadLeft(20, '-'));
+            Console.WriteLine("A)dd Movie");
+            Console.WriteLine("V)iew Movie");
+            Console.WriteLine("E)dit Movie");
+            Console.WriteLine("D)elete Movie");
+            Console.WriteLine("Q)uit");
+
+            do
+            {
+                string input = Console.ReadLine();
+
+                //Validate input
+                if (String.Compare(input, "A", true) == 0)
+                    return 'A';
+                else if (String.Compare(input, "V", true) == 0)
+                    return 'V';
+                else if (String.Compare(input, "E", true) == 0)
+                    return 'E';
+                else if (String.Compare(input, "D", true) == 0)
+                    return 'D';
+                else if (String.Compare(input, "Q", true) == 0)
+                    return 'Q';
+                else
+                    Console.WriteLine("Invalid Input");
+            } while (true);
+        }
+        private static void AddMovie ()
+        {
+            title = ReadString("Enter a movie title: ", true);
+            duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
+            releaseYear = ReadInt32("Enter release year: ", 1900);
+            rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
+            genre = ReadString("Enter a genre (optional): ", false);
+            isColor = ReadBoolean("in color (Y/N)? ");
+            description = ReadString("Enter a description (optional): ", false);
+        }
         private static void ViewMovie ()
         {
             // TODO: Does movie exist
+            if(String.IsNullOrEmpty(title))
+            {
+                Console.WriteLine("No movie to view.");
+                return;
+            }
             Console.WriteLine(title);
 
             // releaseYear (duration mins) rating
@@ -69,29 +127,18 @@ namespace MovieLib.ConsoleHost
             //Console.WriteLine(genre);
             Console.WriteLine(description);
         }
-
-        private static bool ConfirmQuit()
+        private static void DeleteMovie ()
         {
-            return ReadBoolean("Are you sure you want to quit? (y/n) ");
-        }
-        private static void AddMovie ()
-        {
-            title = ReadString("Enter a movie title: ", true);
-            duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
-            releaseYear = ReadInt32("Enter release year: ", 1900);
-            rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
-            genre = ReadString("Enter a genre (optional): ", false);
-            isColor = ReadBoolean("in color (Y/N)? ");
-            description = ReadString("Enter a description (optional): ", false);
-        }
+            if (String.IsNullOrEmpty(title))
+            {
+                Console.WriteLine("No movie to delete.");
+                return;
+            }
 
-        static string title;
-        static int duration;
-        static int releaseYear;
-        static string rating;
-        static string genre;
-        static bool isColor;
-        static string description;
+            // Confirm and delete the movie
+            if (ReadBoolean($"Are you sure you want to delete '{title}' (Y/N)"))
+                title = "";
+        }
 
         private static bool ReadBoolean ( string message )
         {
@@ -116,7 +163,6 @@ namespace MovieLib.ConsoleHost
                 Console.WriteLine("Invalid Input. Must enter Y/N.");
             } while (true);
         }
-
         private static int ReadInt32 ( string message, int minimumValue )
         {
             Console.Write(message);
@@ -140,48 +186,24 @@ namespace MovieLib.ConsoleHost
                 Console.WriteLine("Invalid Input. Must be a whole number and greater than " + minimumValue);
             };
         }
-
-        //Function naming rules
-        //Functions are verbs
-        //Functions are always Pascal cased
-        //Functions should do a single, logical thing. Name should describe the action.
         private static string ReadString ( string message, bool required )
         {
             Console.WriteLine(message);
 
-            string input = Console.ReadLine();
-
-            //TODO: Validate input, if required
-
-            return input;
-        }
-
-        static char DisplayMenu()
-        {
-            Console.WriteLine("A)dd Movie");
-            Console.WriteLine("V)iew Movie");
-            Console.WriteLine("E)dit Movie");
-            Console.WriteLine("D)elete Movie");
-            Console.WriteLine("Q)uit");
-
-            string input = Console.ReadLine();
-
-            //Validate input
-            if (input == "A")
-                return 'A';
-            else if (input == "V")
-                return 'V';
-            else if (input == "E")
-                return 'E';
-            else if (input == "D")
-                return 'D';
-            else if (input == "Q")
-                return 'Q';
-            else
+            do
             {
-                Console.WriteLine("Invalid Input");
-                return 'X';
-            };
+                string input = Console.ReadLine();
+
+                //TODO: Validate input, if required
+                if (!required || !String.IsNullOrEmpty(input))
+                    return input;
+
+                Console.WriteLine("Value is required.");
+            } while (true);
+        }
+        private static bool ConfirmQuit ()
+        {
+            return ReadBoolean("Are you sure you want to quit? (y/n) ");
         }
     }
 }
