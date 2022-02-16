@@ -45,14 +45,8 @@ namespace MovieLib.ConsoleHost
             } while (!done);
         }
 
-        static string title;
-        static int duration;
-        static int releaseYear;
-        static string rating;
-        static string genre;
-        static bool isColor;
-        static string description;
-
+        static Movie movie;
+        
         private static char DisplayMenu ()
         {
             Console.WriteLine("Movie Library");
@@ -85,33 +79,36 @@ namespace MovieLib.ConsoleHost
         }
         private static void AddMovie ()
         {
-            title = ReadString("Enter a movie title: ", true);
-            duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
-            releaseYear = ReadInt32("Enter release year: ", 1900);
-            rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
-            genre = ReadString("Enter a genre (optional): ", false);
-            isColor = ReadBoolean("in color (Y/N)? ");
-            description = ReadString("Enter a description (optional): ", false);
+            movie = new Movie();
+
+            movie.title = ReadString("Enter a movie title: ", true);
+            movie.duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
+            movie.releaseYear = ReadInt32("Enter release year: ", 1900);
+            movie.rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
+            movie.genre = ReadString("Enter a genre (optional): ", false);
+            movie.isColor = ReadBoolean("in color (Y/N)? ");
+            movie.description = ReadString("Enter a description (optional): ", false);
         }
         private static void ViewMovie ()
         {
-            // TODO: Does movie exist
-            if(String.IsNullOrEmpty(title))
+            if(String.IsNullOrEmpty(movie.title))
             {
                 Console.WriteLine("No movie to view.");
                 return;
             }
-            Console.WriteLine(title);
+            Console.WriteLine(movie.title);
 
-            // releaseYear (duration mins) rating
-            //Formatting 1 string conacenation
-            //Console.WriteLine(releaseYear + " (" + duration + " mins) " + rating);
-
-            //Formatting 2 - string formatting
-            //Console.WriteLine("{0} ({1} mins) {2}", releaseYear, duration, rating);
-
-            //Formating 3 - String interpolation
-            Console.WriteLine($"{releaseYear} ({duration} mins) {rating}");
+            /*Sample code
+            * releaseYear (duration mins) rating
+            *Formatting 1 string conacenation
+            *Console.WriteLine(releaseYear + " (" + duration + " mins) " + rating);
+            *
+            *Formatting 2 - string formatting
+            *Console.WriteLine("{0} ({1} mins) {2}", releaseYear, duration, rating);
+            *
+            *Formating 3 - String interpolation
+            */
+            Console.WriteLine($"{movie.releaseYear} ({movie.duration} mins) {movie.rating}");
 
             //genre (Color | Black/White)
             //if(isColor)
@@ -119,25 +116,25 @@ namespace MovieLib.ConsoleHost
             //else
             //    Console.WriteLine($"{genre} (Black/White)");
             // Conditional operator
-            Console.WriteLine($"{genre} ({(isColor ? "Color" : "Black/White")})");
+            Console.WriteLine($"{movie.genre} ({(movie.isColor ? "Color" : "Black/White")})");
 
             //Console.WriteLine(duration);
             //Console.WriteLine(isColor);
             //Console.WriteLine(rating);
             //Console.WriteLine(genre);
-            Console.WriteLine(description);
+            Console.WriteLine(movie.description);
         }
         private static void DeleteMovie ()
         {
-            if (String.IsNullOrEmpty(title))
+            if (String.IsNullOrEmpty(movie.title))
             {
                 Console.WriteLine("No movie to delete.");
                 return;
             }
 
             // Confirm and delete the movie
-            if (ReadBoolean($"Are you sure you want to delete '{title}' (Y/N)"))
-                title = "";
+            if (ReadBoolean($"Are you sure you want to delete '{movie.title}' (Y/N)"))
+                movie.title = "";
         }
 
         private static bool ReadBoolean ( string message )
@@ -194,7 +191,6 @@ namespace MovieLib.ConsoleHost
             {
                 string input = Console.ReadLine();
 
-                //TODO: Validate input, if required
                 if (!required || !String.IsNullOrEmpty(input))
                     return input;
 
