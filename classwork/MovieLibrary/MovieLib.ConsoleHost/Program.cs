@@ -81,22 +81,34 @@ namespace MovieLib.ConsoleHost
         {
             movie = new Movie();
 
-            movie.title = ReadString("Enter a movie title: ", true);
-            movie.duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
-            movie.releaseYear = ReadInt32("Enter release year: ", 1900);
-            movie.rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
-            movie.genre = ReadString("Enter a genre (optional): ", false);
-            movie.isColor = ReadBoolean("in color (Y/N)? ");
-            movie.description = ReadString("Enter a description (optional): ", false);
+            do
+            {
+                movie.Title = ReadString("Enter a movie title: ", true);
+                movie._duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
+                movie._releaseYear = ReadInt32("Enter release year: ", 1900);
+                movie._rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
+                movie._genre = ReadString("Enter a genre (optional): ", false);
+                movie._isClassic = ReadBoolean("ia a classic (Y/N)? ");
+                movie._description = ReadString("Enter a description (optional): ", false);
+
+                movie.CalculateBlackAndWhite();
+
+                var error = movie.Validate();
+                if (String.IsNullOrEmpty(error))
+                    return;
+
+                Console.WriteLine(error);
+            } while (true);
         }
         private static void ViewMovie ()
         {
-            if(String.IsNullOrEmpty(movie.title))
+           
+            if(movie == null)
             {
                 Console.WriteLine("No movie to view.");
                 return;
             }
-            Console.WriteLine(movie.title);
+            Console.WriteLine(movie._title);
 
             /*Sample code
             * releaseYear (duration mins) rating
@@ -108,7 +120,7 @@ namespace MovieLib.ConsoleHost
             *
             *Formating 3 - String interpolation
             */
-            Console.WriteLine($"{movie.releaseYear} ({movie.duration} mins) {movie.rating}");
+            Console.WriteLine($"{movie._releaseYear} ({movie._duration} mins) {movie._rating}");
 
             //genre (Color | Black/White)
             //if(isColor)
@@ -116,25 +128,25 @@ namespace MovieLib.ConsoleHost
             //else
             //    Console.WriteLine($"{genre} (Black/White)");
             // Conditional operator
-            Console.WriteLine($"{movie.genre} ({(movie.isColor ? "Color" : "Black/White")})");
+            Console.WriteLine($"{movie._genre} ({(movie._isClassic ? "Classic" : "")})");
 
             //Console.WriteLine(duration);
             //Console.WriteLine(isColor);
             //Console.WriteLine(rating);
             //Console.WriteLine(genre);
-            Console.WriteLine(movie.description);
+            Console.WriteLine(movie._description);
         }
         private static void DeleteMovie ()
         {
-            if (String.IsNullOrEmpty(movie.title))
+            if (movie == null)
             {
                 Console.WriteLine("No movie to delete.");
                 return;
             }
 
             // Confirm and delete the movie
-            if (ReadBoolean($"Are you sure you want to delete '{movie.title}' (Y/N)"))
-                movie.title = "";
+            if (ReadBoolean($"Are you sure you want to delete '{movie._title}' (Y/N)"))
+                movie = null;
         }
 
         private static bool ReadBoolean ( string message )
@@ -199,7 +211,7 @@ namespace MovieLib.ConsoleHost
         }
         private static bool ConfirmQuit ()
         {
-            return ReadBoolean("Are you sure you want to quit? (y/n) ");
+            return ReadBoolean("Are you sure you want to quit? (Y/N) ");
         }
     }
 }
