@@ -1,5 +1,6 @@
 ﻿using System;
 
+//Phoenix
 namespace MovieLib.ConsoleHost
 {
     class Program
@@ -45,7 +46,7 @@ namespace MovieLib.ConsoleHost
             } while (!done);
         }
 
-        static Movie movie;
+        static Movie s_movie;
         
         private static char DisplayMenu ()
         {
@@ -79,21 +80,23 @@ namespace MovieLib.ConsoleHost
         }
         private static void AddMovie ()
         {
-            movie = new Movie();
+            s_movie = new Movie();
+
+            
 
             do
             {
-                movie.Title = ReadString("Enter a movie title: ", true);
-                movie._duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
-                movie._releaseYear = ReadInt32("Enter release year: ", 1900);
-                movie._rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
-                movie._genre = ReadString("Enter a genre (optional): ", false);
-                movie._isClassic = ReadBoolean("ia a classic (Y/N)? ");
-                movie._description = ReadString("Enter a description (optional): ", false);
+                s_movie.Title = ReadString("Enter a movie title: ", true);
+                s_movie.Duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
+                s_movie.ReleaseYear = ReadInt32("Enter release year: ", 1900);
+                s_movie.Rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
+                s_movie.Genre = ReadString("Enter a genre (optional): ", false);
+                s_movie.IsClassic = ReadBoolean("ia a classic (Y/N)? ");
+                s_movie.Description = ReadString("Enter a description (optional): ", false);
 
-                movie.CalculateBlackAndWhite();
+                //s_movie.CalculateBlackAndWhite();
 
-                var error = movie.Validate();
+                var error = s_movie.Validate();
                 if (String.IsNullOrEmpty(error))
                     return;
 
@@ -103,12 +106,12 @@ namespace MovieLib.ConsoleHost
         private static void ViewMovie ()
         {
            
-            if(movie == null)
+            if(s_movie == null)
             {
                 Console.WriteLine("No movie to view.");
                 return;
             }
-            Console.WriteLine(movie._title);
+            Console.WriteLine(s_movie.Title);
 
             /*Sample code
             * releaseYear (duration mins) rating
@@ -120,7 +123,7 @@ namespace MovieLib.ConsoleHost
             *
             *Formating 3 - String interpolation
             */
-            Console.WriteLine($"{movie._releaseYear} ({movie._duration} mins) {movie._rating}");
+            Console.WriteLine($"{s_movie.ReleaseYear} ({s_movie.Duration} mins) {s_movie.Rating}");
 
             //genre (Color | Black/White)
             //if(isColor)
@@ -128,25 +131,25 @@ namespace MovieLib.ConsoleHost
             //else
             //    Console.WriteLine($"{genre} (Black/White)");
             // Conditional operator
-            Console.WriteLine($"{movie._genre} ({(movie._isClassic ? "Classic" : "")})");
+            Console.WriteLine($"{s_movie.Genre} ({(s_movie.IsClassic ? "Classic" : "")})");
 
             //Console.WriteLine(duration);
             //Console.WriteLine(isColor);
             //Console.WriteLine(rating);
             //Console.WriteLine(genre);
-            Console.WriteLine(movie._description);
+            Console.WriteLine(s_movie.Description);
         }
         private static void DeleteMovie ()
         {
-            if (movie == null)
+            if (s_movie == null)
             {
                 Console.WriteLine("No movie to delete.");
                 return;
             }
 
             // Confirm and delete the movie
-            if (ReadBoolean($"Are you sure you want to delete '{movie._title}' (Y/N)"))
-                movie = null;
+            if (ReadBoolean($"Are you sure you want to delete '{s_movie.Title}' (Y/N)"))
+                s_movie = null;
         }
 
         private static bool ReadBoolean ( string message )

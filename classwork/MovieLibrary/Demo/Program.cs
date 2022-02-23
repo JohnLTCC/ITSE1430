@@ -135,6 +135,13 @@ namespace Demo
                 //++X postfix decrement
                 --x;
             }
+
+            static void DemoObject()
+            {
+                //Object val = 10;
+                //val = "Hello";
+                //val = null;
+            }
         }
     }
 }
