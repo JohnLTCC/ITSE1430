@@ -142,6 +142,57 @@ namespace Demo
                 //val = "Hello";
                 //val = null;
             }
+
+            //Type checking
+            static void DemoTypeChecking(object data)
+            {
+                //Assume a string
+
+                //C-style case
+                //    Runtime rerror if wrong
+                //    No way to validate at runtime
+                //    Still compile safe time (string)10;
+                var dataString = (string)data;
+
+                // is-operator ::= E is T -> boolean
+                if (data is string)
+                {
+                    dataString = (string)data;
+                };
+
+                // as-operator ::= E as T -> T or null
+                //    Only works if T supports nulls (strings, objects, class types)
+                dataString = data as string;
+                if(dataString != null) { };
+
+                //Pattern matching ::=  E is T id -> (boolean with id as typed value if true)
+                //    dataString2's scope is limited to the if statement
+                if (data is string dataString2) { };
+            }
+            
+            static void DemoInheritence()
+            {
+                /* Types
+                 * 
+                *   Reference - Classes - strings and classes
+                *     memory - heep (new) holds the reference to a place in memory
+                *     assignment - changes the memory addresss in the variable, does not copy
+                *     equality - compares address to memory, the values in the memory are irrelevent
+                *     nullability - can store nulls
+                *     construction - customizable
+                *     inheritence - supports it
+                *     mute-ability - whatever
+                *     
+                *   Value - Struct - Primitives (except string)
+                *     memory - call stack (always valid)
+                *     assignment - copies the values
+                *     equality - if all values equal
+                *     nullability - cannot store nulls, call stack can't have nulls
+                *     construction - 0 initializes the data set
+                *     inheritence - Is not supported
+                *     mute-ability - should be immutable (shouldn't change values without reassignment)
+                */
+            }
         }
     }
 }
