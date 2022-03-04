@@ -47,6 +47,7 @@ namespace MovieLib.ConsoleHost
         }
 
         static Movie s_movie;
+        static MemoryMovieDatabase s_movies = new MemoryMovieDatabase();
         
         private static char DisplayMenu ()
         {

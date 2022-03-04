@@ -2,7 +2,7 @@
 
 namespace Demo
 {
-    class Program
+    class Demo
     {
         static void Main(string[] args)
         {
@@ -107,7 +107,6 @@ namespace Demo
                 //Definitely assigned
                 intValue = hoursWorked;
             }
-
             static void DemoArithmatic ()
             {
                 //Arithmatic Operators
@@ -135,17 +134,16 @@ namespace Demo
                 //++X postfix decrement
                 --x;
             }
-
             static void DemoObject()
             {
                 //Object val = 10;
                 //val = "Hello";
                 //val = null;
             }
-
-            //Type checking
             static void DemoTypeChecking(object data)
             {
+                //Type checking
+
                 //Assume a string
 
                 //C-style case
@@ -169,8 +167,7 @@ namespace Demo
                 //    dataString2's scope is limited to the if statement
                 if (data is string dataString2) { };
             }
-            
-            static void DemoInheritence()
+            static void DemoReferencesAndValues()
             {
                 /* Types
                  * 
@@ -192,6 +189,27 @@ namespace Demo
                 *     inheritence - Is not supported
                 *     mute-ability - should be immutable (shouldn't change values without reassignment)
                 */
+            }
+            static void DemoConstructor()
+            {
+                // Do minimal initialization of instance, if any
+                // Don"t initialize fields - use field inizializers
+                // Unless
+                //    Depends on other fields
+                //    Relies on data available after initialization
+
+                //Constructor chaining
+                //   public MovieDatabase(string name) : this() <- calls another constructor works with overloaded as well
+            }
+            static void DemoInheritence()
+            {
+                //Example - public class MemoryMovieDatabase : MovieDatabase
+                // - Virtual modifier on the base method
+                // - override modifier on the derived method
+                // - base.Add(); - to refer to base's method
+                // - class() : base() - to call the base classes constructor
+                //   - this happens by defualt. Only use for if there are other constructors
+                // - Protected is an access modifier that makes the member public for derived types
             }
         }
     }
