@@ -1,5 +1,6 @@
 ﻿using System;
 
+//Phoenix
 namespace MovieLib.ConsoleHost
 {
     class Program
@@ -45,7 +46,8 @@ namespace MovieLib.ConsoleHost
             } while (!done);
         }
 
-        static Movie movie;
+        static Movie s_movie;
+        static MemoryMovieDatabase s_movies = new MemoryMovieDatabase();
         
         private static char DisplayMenu ()
         {
@@ -79,24 +81,38 @@ namespace MovieLib.ConsoleHost
         }
         private static void AddMovie ()
         {
-            movie = new Movie();
+            s_movie = new Movie();
 
-            movie.title = ReadString("Enter a movie title: ", true);
-            movie.duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
-            movie.releaseYear = ReadInt32("Enter release year: ", 1900);
-            movie.rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
-            movie.genre = ReadString("Enter a genre (optional): ", false);
-            movie.isColor = ReadBoolean("in color (Y/N)? ");
-            movie.description = ReadString("Enter a description (optional): ", false);
+            
+
+            do
+            {
+                s_movie.Title = ReadString("Enter a movie title: ", true);
+                s_movie.Duration = ReadInt32("Enter duration in minutes (>=0): ", 0);
+                s_movie.ReleaseYear = ReadInt32("Enter release year: ", 1900);
+                s_movie.Rating = ReadString("Enter a rating (e.g. PG, PG-13): ", true);
+                s_movie.Genre = ReadString("Enter a genre (optional): ", false);
+                s_movie.IsClassic = ReadBoolean("ia a classic (Y/N)? ");
+                s_movie.Description = ReadString("Enter a description (optional): ", false);
+
+                //s_movie.CalculateBlackAndWhite();
+
+                var error = s_movie.Validate();
+                if (String.IsNullOrEmpty(error))
+                    return;
+
+                Console.WriteLine(error);
+            } while (true);
         }
         private static void ViewMovie ()
         {
-            if(String.IsNullOrEmpty(movie.title))
+           
+            if(s_movie == null)
             {
                 Console.WriteLine("No movie to view.");
                 return;
             }
-            Console.WriteLine(movie.title);
+            Console.WriteLine(s_movie.Title);
 
             /*Sample code
             * releaseYear (duration mins) rating
@@ -108,7 +124,7 @@ namespace MovieLib.ConsoleHost
             *
             *Formating 3 - String interpolation
             */
-            Console.WriteLine($"{movie.releaseYear} ({movie.duration} mins) {movie.rating}");
+            Console.WriteLine($"{s_movie.ReleaseYear} ({s_movie.Duration} mins) {s_movie.Rating}");
 
             //genre (Color | Black/White)
             //if(isColor)
@@ -116,25 +132,25 @@ namespace MovieLib.ConsoleHost
             //else
             //    Console.WriteLine($"{genre} (Black/White)");
             // Conditional operator
-            Console.WriteLine($"{movie.genre} ({(movie.isColor ? "Color" : "Black/White")})");
+            Console.WriteLine($"{s_movie.Genre} ({(s_movie.IsClassic ? "Classic" : "")})");
 
             //Console.WriteLine(duration);
             //Console.WriteLine(isColor);
             //Console.WriteLine(rating);
             //Console.WriteLine(genre);
-            Console.WriteLine(movie.description);
+            Console.WriteLine(s_movie.Description);
         }
         private static void DeleteMovie ()
         {
-            if (String.IsNullOrEmpty(movie.title))
+            if (s_movie == null)
             {
                 Console.WriteLine("No movie to delete.");
                 return;
             }
 
             // Confirm and delete the movie
-            if (ReadBoolean($"Are you sure you want to delete '{movie.title}' (Y/N)"))
-                movie.title = "";
+            if (ReadBoolean($"Are you sure you want to delete '{s_movie.Title}' (Y/N)"))
+                s_movie = null;
         }
 
         private static bool ReadBoolean ( string message )
@@ -199,7 +215,7 @@ namespace MovieLib.ConsoleHost
         }
         private static bool ConfirmQuit ()
         {
-            return ReadBoolean("Are you sure you want to quit? (y/n) ");
+            return ReadBoolean("Are you sure you want to quit? (Y/N) ");
         }
     }
 }
