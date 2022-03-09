@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JohnLob.AdventureGame.ConsoleHost
+namespace JohnLobsinger.AdventureGame.ConsoleApp
 {
     class Program
     {
