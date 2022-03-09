@@ -139,6 +139,18 @@ namespace Demo
                 //Object val = 10;
                 //val = "Hello";
                 //val = null;
+
+                //Methods
+                //   ToString()
+                int demoInt;
+                demoInt.ToString(); // converts to string
+                //   Equals()
+                string demoString, demoString2;
+                demoString.Equals(demoString2); // compares demoString to parameter.
+                Equals(demoString, demoString2); // compares the two parameters
+                //   GetType()
+                //   GetHashCode()
+
             }
             static void DemoTypeChecking(object data)
             {
@@ -210,6 +222,10 @@ namespace Demo
                 // - class() : base() - to call the base classes constructor
                 //   - this happens by defualt. Only use for if there are other constructors
                 // - Protected is an access modifier that makes the member public for derived types
+            }
+            static void DemoNamespace()
+            {
+                // System.Windows.Form.Form form = new System.Windows.Forms.Form();
             }
         }
     }
