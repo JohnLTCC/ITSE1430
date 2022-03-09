@@ -11,7 +11,7 @@ namespace MovieLib
         //Fields - where data is stored
 
         public const int MinimumReleaseYear = 1900;
-        public readonly DateTime MinimumReleaseDate = new DateTime(1900, 1, 1);
+        //public readonly DateTime MinimumReleaseDate = new DateTime(1900, 1, 1);
 
         /// <summary> Gets or sets the title of the movie. </summary>
         public string Title
