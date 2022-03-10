@@ -16,6 +16,8 @@ namespace JohnLobsinger.AdventureGame.ConsoleApp
             bool exitFlag = true;
             do
             {
+                Console.WriteLine(s_player.CurrentRoom.Description);
+
                 DisplayAvailableRooms();
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -55,12 +57,6 @@ namespace JohnLobsinger.AdventureGame.ConsoleApp
                             Console.WriteLine("You moved into western room\n");
                             s_player.CurrentRoom = s_player.CurrentRoom.WestRoom;
                         } else Console.WriteLine("There is no room to the west. Only a wall.");
-                        break;
-                    }
-                    case ConsoleKey.E :
-                    {
-                        Console.WriteLine("You look around.\n");
-                        Console.WriteLine(s_player.CurrentRoom.Description);
                         break;
                     }
                     case ConsoleKey.C: DisplayControls(); break;
