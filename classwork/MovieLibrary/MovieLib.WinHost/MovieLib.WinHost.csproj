@@ -4,6 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Company>John Lobsinger ITSE1430</Company>
+    <Product>Movie Library</Product>
+    <Authors>John Lobsinger</Authors>
   </PropertyGroup>
 
 </Project>

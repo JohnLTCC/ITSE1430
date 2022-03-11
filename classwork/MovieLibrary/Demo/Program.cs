@@ -226,6 +226,7 @@ namespace Demo
             static void DemoNamespace()
             {
                 // System.Windows.Form.Form form = new System.Windows.Forms.Form();
+                // scoping construct to disambiguate (remove uncertainty) names
             }
         }
     }
