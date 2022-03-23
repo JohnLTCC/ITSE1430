@@ -101,12 +101,17 @@ namespace MovieLib
                 return "Rating is required";
 
             //Special rule - no classic movies before 1940
-            if (IsClassic && ReleaseYear < 1940)
-                return "Release year must be at least 1940 to be a classic";
+            //if (IsClassic && ReleaseYear < 1940)
+            //    return "Release year must be at least 1940 to be a classic";
 
             return "";
         }
 
         public int Id { get; private set; }
+
+        public override string ToString ()
+        {
+            return $"{Title} ({ReleaseYear})";
+        }
     }
 }
