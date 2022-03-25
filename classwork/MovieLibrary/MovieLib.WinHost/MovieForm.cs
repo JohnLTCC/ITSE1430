@@ -74,5 +74,51 @@ namespace MovieLib.WinHost
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
+        private void OnValidateTitle ( object sender, CancelEventArgs e )
+        {
+            var control = sender as Control;
+            if (String.IsNullOrEmpty(control.Text))
+            {
+                _errors.SetError(control, "Title is required");
+                e.Cancel = true;
+            } else
+                _errors.SetError(control, "");
+        }
+
+        private void OnValidateReleaseYear ( object sender, CancelEventArgs e )
+        {
+            var control = sender as Control;
+            var value = ReadAsInt32(control, -1);
+            if (value < Movie.MinimumReleaseYear)
+            {
+                _errors.SetError(control, $"Release year must be at least {Movie.MinimumReleaseYear}");
+                e.Cancel = true;
+            } else
+                _errors.SetError(control, "");
+        }
+
+        private void OnValidateDuration ( object sender, CancelEventArgs e )
+        {
+            var control = sender as Control;
+            var value = ReadAsInt32(control, -1);
+            if (value < 0)
+            {
+                _errors.SetError(control, "Duration must be at least 0 minute");
+                e.Cancel = true;
+            } else
+                _errors.SetError(control, "");
+        }
+
+        private void OnValidateGenre ( object sender, CancelEventArgs e )
+        {
+            var control = sender as Control;
+            if (String.IsNullOrEmpty(control.Text))
+            {
+                _errors.SetError(control, "Genre is required");
+                e.Cancel = true;
+            } else
+                _errors.SetError(control, "");
+        }
     }
 }

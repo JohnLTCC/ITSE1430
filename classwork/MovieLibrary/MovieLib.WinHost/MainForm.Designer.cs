@@ -50,7 +50,7 @@ namespace MovieLib.WinHost
             this.helpToolStripMenuItem});
             this._mainMenu.Location = new System.Drawing.Point(0, 0);
             this._mainMenu.Name = "_mainMenu";
-            this._mainMenu.Size = new System.Drawing.Size(800, 24);
+            this._mainMenu.Size = new System.Drawing.Size(799, 24);
             this._mainMenu.TabIndex = 0;
             this._mainMenu.Text = "menuStrip1";
             // 
@@ -82,21 +82,21 @@ namespace MovieLib.WinHost
             // _miCharacterAdd
             // 
             this._miCharacterAdd.Name = "_miCharacterAdd";
-            this._miCharacterAdd.Size = new System.Drawing.Size(180, 22);
+            this._miCharacterAdd.Size = new System.Drawing.Size(107, 22);
             this._miCharacterAdd.Text = "&Add";
             this._miCharacterAdd.Click += new System.EventHandler(this.OnMovieAdd);
             // 
             // _miCharacterEdit
             // 
             this._miCharacterEdit.Name = "_miCharacterEdit";
-            this._miCharacterEdit.Size = new System.Drawing.Size(180, 22);
+            this._miCharacterEdit.Size = new System.Drawing.Size(107, 22);
             this._miCharacterEdit.Text = "&Edit";
             this._miCharacterEdit.Click += new System.EventHandler(this.OnMovieEdit);
             // 
             // _miCharacterDelete
             // 
             this._miCharacterDelete.Name = "_miCharacterDelete";
-            this._miCharacterDelete.Size = new System.Drawing.Size(180, 22);
+            this._miCharacterDelete.Size = new System.Drawing.Size(107, 22);
             this._miCharacterDelete.Text = "&Delete";
             this._miCharacterDelete.Click += new System.EventHandler(this.OnMovieDelete);
             // 
@@ -117,18 +117,19 @@ namespace MovieLib.WinHost
             // 
             // _lstMovies
             // 
+            this._lstMovies.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lstMovies.FormattingEnabled = true;
             this._lstMovies.ItemHeight = 15;
-            this._lstMovies.Location = new System.Drawing.Point(12, 27);
+            this._lstMovies.Location = new System.Drawing.Point(0, 24);
             this._lstMovies.Name = "_lstMovies";
-            this._lstMovies.Size = new System.Drawing.Size(776, 409);
+            this._lstMovies.Size = new System.Drawing.Size(799, 423);
             this._lstMovies.TabIndex = 1;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(799, 447);
             this.Controls.Add(this._lstMovies);
             this.Controls.Add(this._mainMenu);
             this.MainMenuStrip = this._mainMenu;

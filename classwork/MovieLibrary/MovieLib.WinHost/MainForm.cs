@@ -19,14 +19,7 @@ namespace MovieLib.WinHost
 
         private void OnFileExit ( object sender, EventArgs e )
         {
-            //Confirm exit
-            //DialogResult dr = MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if(MessageBox.Show(this, "Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                //User clicked Yes
-                Close();
-            }
+            Close();
         }
 
         private void OnHelpAbout ( object sender, EventArgs e )
@@ -88,6 +81,14 @@ namespace MovieLib.WinHost
                 _lstMovies.Items.Add(_movie);
         }
 
+        protected override void OnFormClosing ( FormClosingEventArgs e )
+        {
+            // Asks if the user wants to quit in a message box
+            if (MessageBox.Show(this, "Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                e.Cancel = true;
+        }
+
         private Movie _movie;
+
     }
 }
