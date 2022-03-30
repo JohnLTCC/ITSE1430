@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using MovieLib.Memory;
@@ -14,7 +7,7 @@ namespace MovieLib.WinHost
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        public MainForm ()
         {
             InitializeComponent();
         }
@@ -101,6 +94,6 @@ namespace MovieLib.WinHost
         }
 
         private Movie _movie;
-        private readonly MemoryMovieDatabase _movies = new MemoryMovieDatabase ();
+        private readonly MemoryMovieDatabase _movies = new MemoryMovieDatabase();
     }
 }

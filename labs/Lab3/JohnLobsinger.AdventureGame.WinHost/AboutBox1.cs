@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MovieLib.WinHost
+namespace JohnLobsinger.AdventureGame.WinHost
 {
-    partial class AboutBox : Form
+    partial class AboutBox1 : Form
     {
-        public AboutBox ()
+        public AboutBox1 ()
         {
             InitializeComponent();
             this.Text = String.Format("About {0}", AssemblyTitle);
