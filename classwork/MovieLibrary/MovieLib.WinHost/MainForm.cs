@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using MovieLib.Memory;
+
 namespace MovieLib.WinHost
 {
     public partial class MainForm : Form
@@ -31,12 +33,21 @@ namespace MovieLib.WinHost
         private void OnMovieAdd ( object sender, EventArgs e )
         {
             var dlg = new MovieForm();
-            if (dlg.ShowDialog(this) != DialogResult.OK)
-                return;
+            do
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                    return;
 
-            //TODO: Save movie
-            _movie = dlg.Movie;
-            UpdateUI();
+                // Saves the movie
+                var error = _movies.Add(dlg.Movie);
+                if (String.IsNullOrEmpty(error))
+                {
+                    UpdateUI();
+                    return;
+                };
+
+                MessageBox.Show(this, error, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } while (true);
         }
 
         private void OnMovieEdit ( object sender, EventArgs e )
@@ -77,8 +88,9 @@ namespace MovieLib.WinHost
         private void UpdateUI ()
         {
             _lstMovies.Items.Clear();
-            if (_movie != null)
-                _lstMovies.Items.Add(_movie);
+
+            var movies = _movies.GetAll();
+            _lstMovies.Items.AddRange(movies);
         }
 
         protected override void OnFormClosing ( FormClosingEventArgs e )
@@ -89,6 +101,6 @@ namespace MovieLib.WinHost
         }
 
         private Movie _movie;
-
+        private readonly MemoryMovieDatabase _movies = new MemoryMovieDatabase ();
     }
 }

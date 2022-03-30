@@ -82,6 +82,7 @@ namespace MovieLib.WinHost
             // _btnCancel
             // 
             this._btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnCancel.CausesValidation = false;
             this._btnCancel.Location = new System.Drawing.Point(409, 285);
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -200,6 +201,7 @@ namespace MovieLib.WinHost
             // 
             // _errors
             // 
+            this._errors.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this._errors.ContainerControl = this;
             // 
             // MovieForm

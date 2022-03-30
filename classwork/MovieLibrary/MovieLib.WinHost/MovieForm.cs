@@ -44,6 +44,8 @@ namespace MovieLib.WinHost
         }
         private void OnSave ( object sender, EventArgs e )
         {
+            if (!ValidateChildren())
+                return;
             // Create a new movie
             var movie = new Movie();
 

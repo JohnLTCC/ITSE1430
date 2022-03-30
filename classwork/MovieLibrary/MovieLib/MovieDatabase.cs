@@ -40,12 +40,4 @@ namespace MovieLib
             return null;
         }
     }
-
-    public class MemoryMovieDatabase : MovieDatabase
-    {
-        public override void Add ( Movie movie )
-        {
-            base.Add(movie);
-        }
-    }
 }
