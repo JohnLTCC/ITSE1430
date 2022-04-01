@@ -134,7 +134,7 @@ namespace MovieLib.WinHost
             this.Controls.Add(this._mainMenu);
             this.MainMenuStrip = this._mainMenu;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Movie Library";
             this._mainMenu.ResumeLayout(false);
             this._mainMenu.PerformLayout();
             this.ResumeLayout(false);

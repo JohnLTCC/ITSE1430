@@ -107,7 +107,53 @@ namespace MovieLib
             return "";
         }
 
-        public int Id { get; private set; }
+        public int Id { get; set; }
+
+        public Movie Copy ()
+        {
+            /* Object initializer syntax
+            *var item = new Movie();
+            *item.Id = Id;
+            *item.Title = Title;
+            *item.Description = Description;
+            *item.Duration = Duration;
+            *item.ReleaseYear = ReleaseYear;
+            *item.Genre = Genre;
+            *item.Rating = Rating;
+            *item.IsClassic = IsClassic;
+            */
+
+            //return item;
+
+            // Object initializer syntax
+            // Only works with new
+            /* 1. Remove smicolon ad curlies
+             * 2. Indent for readablity
+             * 3. Replace semicolon with comas
+             * 4. Removce instance name
+             */
+            return new Movie() {
+                Id = Id,
+                Title = Title,
+                Description = Description,
+                Duration = Duration,
+                ReleaseYear = ReleaseYear,
+                Genre = Genre,
+                Rating = Rating,
+                IsClassic = IsClassic
+            };
+        }
+
+        public void CopyFrom(Movie source)
+        {
+            Title = source.Title;
+            Description = source.Description;
+            Duration = source.Duration;
+            ReleaseYear = source.ReleaseYear;
+            Genre = source.Genre;
+            Rating = source.Rating;
+            IsClassic = source.IsClassic;
+        }
 
         public override string ToString ()
         {

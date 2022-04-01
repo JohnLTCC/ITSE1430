@@ -25,7 +25,8 @@ namespace MovieLib.Memory
                 return "Movie must be unique.";
 
             // Add movie
-            _movies.Add(movie);
+            movie.Id = _id++;
+            _movies.Add(movie.Copy()); ;
             return "";
         }
 
@@ -41,22 +42,70 @@ namespace MovieLib.Memory
             return null;
         }
 
-        public void Update ( Movie movie )
+        private Movie FindById ( int id )
         {
-
-        }
-        public void Delete ( Movie movie )
-        {
-
-        }
-        public Movie Get ()
-        {
+            // Find by movie.Id
+            foreach (var item in _movies)
+            {
+                if (item.Id == id)
+                    return item;
+            }
             return null;
         }
-        public Movie[] GetAll()
+
+        public string Update ( int id, Movie movie )
         {
-            //TODO: Broken
-            return _movies.ToArray();
+            // Validation
+            if (id <= 0)
+                return "ID must be greater than or equal to 0.";
+            if (movie == null)
+                return "Movie cannot be null.";
+            var error = movie.Validate();
+            if (!String.IsNullOrEmpty(error))
+                return error;
+
+            //Title must be unique
+            var existing = FindByName(movie.Title);
+            if (existing != null && existing.Id != id)
+                return "Movie must be unique.";
+
+            //Make sure movie exists
+            existing = FindById(id);
+            if (existing == null)
+                return "Movie does not exist";
+
+            // Updates movie
+            existing.CopyFrom(movie);
+            return "";
         }
+        public void Delete ( int id )
+        {
+            // Find by movie.Id
+            foreach (var item in _movies)
+            {
+                if(item.Id == id)
+                {
+                    _movies.Remove(item);
+                    return;
+                }
+            }
+        }
+        public Movie Get ( int id)
+        {
+            return FindById(id)?.Copy();
+        }
+        public Movie[] GetAll ()
+        {
+            // Need to clone movies
+            var items = new Movie[_movies.Count];
+            var index = 0;
+            foreach (var movie in _movies)
+                items[index++] = movie.Copy();
+
+            return items;
+        }
+
+        //Simple identifier system
+        private int _id = 1;
     }
 }

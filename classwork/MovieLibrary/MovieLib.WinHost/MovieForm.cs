@@ -34,14 +34,6 @@ namespace MovieLib.WinHost
                 _txtDescription.Text = Movie.Description;
             }
         }
-
-        private int ReadAsInt32(Control control, int defaultValue)
-        {
-            if (Int32.TryParse(control.Text, out var result))
-                return result;
-
-            return defaultValue;
-        }
         private void OnSave ( object sender, EventArgs e )
         {
             if (!ValidateChildren())
@@ -70,11 +62,14 @@ namespace MovieLib.WinHost
 
             MessageBox.Show(this, error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
         private void OnCancel ( object sender, EventArgs e )
         {
-            DialogResult = DialogResult.Cancel;
-            Close();
+            /// Confirms cancel
+            if (MessageBox.Show(this, "Are you sure you want to exit?\nThis will leave any changes unsaved.", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                DialogResult = DialogResult.Cancel;
+                Close();
+            }
         }
 
         private void OnValidateTitle ( object sender, CancelEventArgs e )
@@ -87,7 +82,6 @@ namespace MovieLib.WinHost
             } else
                 _errors.SetError(control, "");
         }
-
         private void OnValidateReleaseYear ( object sender, CancelEventArgs e )
         {
             var control = sender as Control;
@@ -99,7 +93,6 @@ namespace MovieLib.WinHost
             } else
                 _errors.SetError(control, "");
         }
-
         private void OnValidateDuration ( object sender, CancelEventArgs e )
         {
             var control = sender as Control;
@@ -111,7 +104,6 @@ namespace MovieLib.WinHost
             } else
                 _errors.SetError(control, "");
         }
-
         private void OnValidateGenre ( object sender, CancelEventArgs e )
         {
             var control = sender as Control;
@@ -121,6 +113,14 @@ namespace MovieLib.WinHost
                 e.Cancel = true;
             } else
                 _errors.SetError(control, "");
+        }
+
+        private int ReadAsInt32 ( Control control, int defaultValue )
+        {
+            if (Int32.TryParse(control.Text, out var result))
+                return result;
+
+            return defaultValue;
         }
     }
 }

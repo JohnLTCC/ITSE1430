@@ -12,6 +12,23 @@ namespace MovieLib.WinHost
             InitializeComponent();
         }
 
+        protected override void OnLoad ( EventArgs e )
+        {
+            base.OnLoad(e);
+
+            // If database is empty
+            if(_movies.GetAll().Length == 0)
+            {
+                if(MessageBox.Show(this, "Do you want to seed the database?", "Seed", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // seeds the database
+                    var seed = new SeedDatabase();
+                    seed.Seed(_movies);
+                    UpdateUI();
+                }
+            }
+        }
+
         private void OnFileExit ( object sender, EventArgs e )
         {
             Close();
@@ -52,12 +69,21 @@ namespace MovieLib.WinHost
             var dlg = new MovieForm();
             dlg.Movie = movie;
 
-            if (dlg.ShowDialog(this) != DialogResult.OK)
-                return;
+            do
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                    return;
 
-            //TODO: Update movie
-            _movie = dlg.Movie;
-            UpdateUI();
+                //TODO: Update movie
+                var error = _movies.Update(movie.Id, dlg.Movie);
+                if (String.IsNullOrEmpty(error))
+                {
+                    UpdateUI();
+                    return;
+                }
+
+                MessageBox.Show(this, error, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } while (true);
         }
 
         private void OnMovieDelete ( object sender, EventArgs e )
@@ -69,7 +95,7 @@ namespace MovieLib.WinHost
             if (MessageBox.Show(this, $"Are you sure you want to delete {movie.Title}?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
-            _movie = null;
+            _movies.Delete(movie.Id);
             UpdateUI();
         }
 
@@ -83,7 +109,20 @@ namespace MovieLib.WinHost
             _lstMovies.Items.Clear();
 
             var movies = _movies.GetAll();
+
+            //BreakMovies(movies);
+
             _lstMovies.Items.AddRange(movies);
+        }
+
+        private void BreakMovies ( Movie[] movies )
+        {
+            if (movies.Length > 0)
+            {
+                var firstMovie = movies[0];
+
+                firstMovie.Title = "Star Wars";
+            }
         }
 
         protected override void OnFormClosing ( FormClosingEventArgs e )
@@ -93,7 +132,6 @@ namespace MovieLib.WinHost
                 e.Cancel = true;
         }
 
-        private Movie _movie;
         private readonly MemoryMovieDatabase _movies = new MemoryMovieDatabase();
     }
 }
