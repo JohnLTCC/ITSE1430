@@ -51,8 +51,7 @@ namespace MovieLib.WinHost
             movie.Description = _txtDescription.Text;
 
             // Validate
-            var error = movie.Validate();
-            if (String.IsNullOrEmpty(error))
+            if (!new ObjectValidator().TryValidateObject(movie, out var errors))
             {
                 Movie = movie;
                 DialogResult = DialogResult.OK;
@@ -60,7 +59,7 @@ namespace MovieLib.WinHost
                 return;
             }
 
-            MessageBox.Show(this, error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Movie is invalid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         private void OnCancel ( object sender, EventArgs e )
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 using MovieLib.Memory;
@@ -17,7 +19,7 @@ namespace MovieLib.WinHost
             base.OnLoad(e);
 
             // If database is empty
-            if(_movies.GetAll().Length == 0)
+            if(!_movies.GetAll().Any())
             {
                 if(MessageBox.Show(this, "Do you want to seed the database?", "Seed", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
@@ -109,21 +111,21 @@ namespace MovieLib.WinHost
             _lstMovies.Items.Clear();
 
             var movies = _movies.GetAll();
-
             //BreakMovies(movies);
 
-            _lstMovies.Items.AddRange(movies);
+            foreach (var movie in movies)
+            _lstMovies.Items.Add(movie);
         }
 
-        private void BreakMovies ( Movie[] movies )
-        {
-            if (movies.Length > 0)
-            {
-                var firstMovie = movies[0];
-
-                firstMovie.Title = "Star Wars";
-            }
-        }
+        //private void BreakMovies ( IEnumerable<Movie> movies )
+        //{
+        //    if (movies.Any())
+        //    {
+        //        var firstMovie = movies[0];
+        //
+        //        firstMovie.Title = "Star Wars";
+        //    }
+        //}
 
         protected override void OnFormClosing ( FormClosingEventArgs e )
         {
@@ -132,6 +134,6 @@ namespace MovieLib.WinHost
                 e.Cancel = true;
         }
 
-        private readonly MemoryMovieDatabase _movies = new MemoryMovieDatabase();
+        private readonly IMovieDatabase _movies = new MemoryMovieDatabase();
     }
 }

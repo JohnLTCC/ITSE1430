@@ -9,7 +9,7 @@ namespace MovieLib
     /// </summary>
     public class SeedDatabase
     {
-        public void Seed ( MemoryMovieDatabase database )
+        public void Seed ( IMovieDatabase database )
         {
             database.Add(new Movie() {
                 Title = "The Lego Movie",

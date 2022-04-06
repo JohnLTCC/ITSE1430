@@ -6,18 +6,31 @@ using System.Threading.Tasks;
 
 namespace MovieLib.Memory
 {
-    public class MemoryMovieDatabase
+    public class MemoryMovieDatabase : IMovieDatabase
     {
         private readonly List<Movie> _movies = new List<Movie>();
 
+        /// <summary>Adds a movie to the database.</summary>
+        /// <param name="movie">The movie to add.</param>
+        /// <returns>The error message, if any.</returns>
+        /// <remarks>
+        /// Errors occur if:
+        /// <paramref name="movie"/> is null.
+        /// <paramref name="movie"/> is not valid.
+        /// A movie with the same title already exists.
+        /// </remarks>
         public string Add ( Movie movie )
         {
             // Validation
             if (movie == null)
                 return "Movie cannot be null.";
-            var error = movie.Validate();
-            if (!String.IsNullOrEmpty(error))
-                return "Movie is invalid.";
+
+            //TODO: Fix Validation message
+            if (!new ObjectValidator().TryValidateObject(movie, out var errors))
+                return "Movie is invalid";
+            //var error = movie.Validate();
+            //if (!String.IsNullOrEmpty(error))
+            //    return "Movie is invalid.";
 
             //Title must be unique
             var existing = FindByName(movie.Title);
@@ -53,6 +66,20 @@ namespace MovieLib.Memory
             return null;
         }
 
+        /// <summary>
+        /// Updates an existing movie in the database.
+        /// </summary>
+        /// <param name="id"> The id of the movie to be updated.</param>
+        /// <param name="movie"> The updated movie.</param>
+        /// <returns>The error message, if any.</returns>
+        /// <remarks>
+        /// Errors occur if:
+        /// <paramref name="id"/> is less than or equal to zero.
+        /// <paramref name="movie"/> is null.
+        /// <paramref name="movie"/> it not valid.
+        /// A movie with the same title already exists
+        /// The movie cannot be found
+        /// </remarks>
         public string Update ( int id, Movie movie )
         {
             // Validation
@@ -60,9 +87,12 @@ namespace MovieLib.Memory
                 return "ID must be greater than or equal to 0.";
             if (movie == null)
                 return "Movie cannot be null.";
-            var error = movie.Validate();
-            if (!String.IsNullOrEmpty(error))
-                return error;
+
+            if (!new ObjectValidator().TryValidateObject(movie, out var errors))
+                return "Movie is invalid";
+            //var error = movie.Validate();
+            //if (!String.IsNullOrEmpty(error))
+            //    return error;
 
             //Title must be unique
             var existing = FindByName(movie.Title);
@@ -78,34 +108,49 @@ namespace MovieLib.Memory
             existing.CopyFrom(movie);
             return "";
         }
+
         public void Delete ( int id )
         {
             // Find by movie.Id
             foreach (var item in _movies)
             {
-                if(item.Id == id)
+                if (item.Id == id)
                 {
                     _movies.Remove(item);
                     return;
                 }
             }
         }
-        public Movie Get ( int id)
+
+        public Movie Get ( int id )
         {
             return FindById(id)?.Copy();
         }
-        public Movie[] GetAll ()
+
+        /*Iterators = implementation of IEnumerable<T>
+        *
+        */
+
+        /// <summary>Gets all the movies.</summary>
+        /// <returns>The movies in the database.</returns>
+        public IEnumerable<Movie> GetAll ()
         {
             // Need to clone movies
-            var items = new Movie[_movies.Count];
-            var index = 0;
+            //var items = new Movie[_movies.Count];
+            //var index = 0;
             foreach (var movie in _movies)
-                items[index++] = movie.Copy();
+            {
+                //System.Diagnostics.Debug.WriteLine($"Returning {movie.Title}");
+                yield return movie.Copy();
+            }
+            //items[index++] = movie.Copy();
 
-            return items;
         }
 
         //Simple identifier system
         private int _id = 1;
+
+        //Not visible by interface
+        public void foo () { }
     }
 }
