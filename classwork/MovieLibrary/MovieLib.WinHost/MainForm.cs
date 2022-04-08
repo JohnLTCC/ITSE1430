@@ -9,23 +9,29 @@ namespace MovieLib.WinHost
 {
     public partial class MainForm : Form
     {
+        // B is the correct answer
         public MainForm ()
         {
             InitializeComponent();
         }
+
+        //Extension methods
+        // Extend a type with a new method
+        // Works with any type
+        //
 
         protected override void OnLoad ( EventArgs e )
         {
             base.OnLoad(e);
 
             // If database is empty
-            if(!_movies.GetAll().Any())
+            IEnumerable<Movie> items = _movies.GetAll();
+            if(!items.Any())
             {
                 if(MessageBox.Show(this, "Do you want to seed the database?", "Seed", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    // seeds the database
-                    var seed = new SeedDatabase();
-                    seed.Seed(_movies);
+                    //Seeds the database
+                    _movies.Seed();
                     UpdateUI();
                 }
             }

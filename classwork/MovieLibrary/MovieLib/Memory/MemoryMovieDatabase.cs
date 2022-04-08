@@ -6,44 +6,21 @@ using System.Threading.Tasks;
 
 namespace MovieLib.Memory
 {
-    public class MemoryMovieDatabase : IMovieDatabase
+    public class MemoryMovieDatabase : MovieDatabase
     {
         private readonly List<Movie> _movies = new List<Movie>();
 
-        /// <summary>Adds a movie to the database.</summary>
-        /// <param name="movie">The movie to add.</param>
-        /// <returns>The error message, if any.</returns>
-        /// <remarks>
-        /// Errors occur if:
-        /// <paramref name="movie"/> is null.
-        /// <paramref name="movie"/> is not valid.
-        /// A movie with the same title already exists.
-        /// </remarks>
-        public string Add ( Movie movie )
+        protected override Movie AddCore ( Movie movie )
         {
-            // Validation
-            if (movie == null)
-                return "Movie cannot be null.";
-
-            //TODO: Fix Validation message
-            if (!new ObjectValidator().TryValidateObject(movie, out var errors))
-                return "Movie is invalid";
-            //var error = movie.Validate();
-            //if (!String.IsNullOrEmpty(error))
-            //    return "Movie is invalid.";
-
-            //Title must be unique
-            var existing = FindByName(movie.Title);
-            if (existing != null)
-                return "Movie must be unique.";
-
-            // Add movie
             movie.Id = _id++;
             _movies.Add(movie.Copy()); ;
-            return "";
+            return movie;
         }
 
-        private Movie FindByName ( string name )
+        /// <summary>Finds a movie by its name.</summary>
+        /// <param name="name">Name of the movie to find.</param>
+        /// <returns>The movie with the name used.</returns>
+        protected override Movie FindByName ( string name )
         {
             // Foreach rules
             // 1. loop variant is readonly
@@ -55,6 +32,9 @@ namespace MovieLib.Memory
             return null;
         }
 
+        /// <summary>Finds a movie by its id.</summary>
+        /// <param name="id">Id for the movie to find.</param>
+        /// <returns>The movie matching the id.</returns>
         private Movie FindById ( int id )
         {
             // Find by movie.Id
@@ -80,36 +60,16 @@ namespace MovieLib.Memory
         /// A movie with the same title already exists
         /// The movie cannot be found
         /// </remarks>
-        public string Update ( int id, Movie movie )
+        protected override void UpdateCore ( int id, Movie movie )
         {
-            // Validation
-            if (id <= 0)
-                return "ID must be greater than or equal to 0.";
-            if (movie == null)
-                return "Movie cannot be null.";
-
-            if (!new ObjectValidator().TryValidateObject(movie, out var errors))
-                return "Movie is invalid";
-            //var error = movie.Validate();
-            //if (!String.IsNullOrEmpty(error))
-            //    return error;
-
-            //Title must be unique
-            var existing = FindByName(movie.Title);
-            if (existing != null && existing.Id != id)
-                return "Movie must be unique.";
-
-            //Make sure movie exists
-            existing = FindById(id);
-            if (existing == null)
-                return "Movie does not exist";
-
-            // Updates movie
+            //Update
+            var existing = FindById(id);
             existing.CopyFrom(movie);
-            return "";
         }
 
-        public void Delete ( int id )
+        /// <summary>Deletes a movie.</summary>
+        /// <param name="id">The ID of the movie to delete.</param>
+        protected override void DeleteCore ( int id )
         {
             // Find by movie.Id
             foreach (var item in _movies)
@@ -122,7 +82,10 @@ namespace MovieLib.Memory
             }
         }
 
-        public Movie Get ( int id )
+        /// <summary>Gets a movie from the database.</summary>
+        /// <param name="id">The id of the movie to get.</param>
+        /// <returns>Returns a copy of the id's movie.</returns>
+        protected override Movie GetCore ( int id )
         {
             return FindById(id)?.Copy();
         }
@@ -133,7 +96,7 @@ namespace MovieLib.Memory
 
         /// <summary>Gets all the movies.</summary>
         /// <returns>The movies in the database.</returns>
-        public IEnumerable<Movie> GetAll ()
+        protected override IEnumerable<Movie> GetAllCore ()
         {
             // Need to clone movies
             //var items = new Movie[_movies.Count];
@@ -149,8 +112,5 @@ namespace MovieLib.Memory
 
         //Simple identifier system
         private int _id = 1;
-
-        //Not visible by interface
-        public void foo () { }
     }
 }
