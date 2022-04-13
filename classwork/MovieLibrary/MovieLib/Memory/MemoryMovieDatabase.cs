@@ -25,11 +25,19 @@ namespace MovieLib.Memory
             // Foreach rules
             // 1. loop variant is readonly
             // 2. Array cannot change
-            foreach (var movie in _movies)
-                if (String.Equals(movie.Title, name, StringComparison.CurrentCultureIgnoreCase))
-                    return movie;
+            //Approach 1
+            //foreach (var movie in _movies)
+            //    if (String.Equals(movie.Title, name, StringComparison.CurrentCultureIgnoreCase))
+            //        return movie;
+            //return null;
 
-            return null;
+            //approach 2
+            //return _movies.FirstOrDefault(x => String.Equals(x.Title,name, StringComparison.CurrentCultureIgnoreCase));
+
+            //Approach 3
+            return (from m in _movies
+                   where String.Equals(m.Title, name, StringComparison.CurrentCultureIgnoreCase)
+                   select m).FirstOrDefault();
         }
 
         /// <summary>Finds a movie by its id.</summary>
@@ -37,14 +45,20 @@ namespace MovieLib.Memory
         /// <returns>The movie matching the id.</returns>
         private Movie FindById ( int id )
         {
-            // Find by movie.Id
-            foreach (var item in _movies)
-            {
-                if (item.Id == id)
-                    return item;
-            }
-            return null;
+            //LINQ:
+            //var movie = _movies.Where(IsMatchingId)
+            //var movie = _movies.Where(item => item.Id == id)
+            //                   .FirstOrDefault();
+            //return movie;
+
+            return _movies.FirstOrDefault(x => x.Id == id);
         }
+
+        //Func<Movie, bool>
+        //private bool IsMatchingId (Movie movie)
+        //{
+        //    return false;
+        //}
 
         /// <summary>
         /// Updates an existing movie in the database.
@@ -71,15 +85,17 @@ namespace MovieLib.Memory
         /// <param name="id">The ID of the movie to delete.</param>
         protected override void DeleteCore ( int id )
         {
-            // Find by movie.Id
-            foreach (var item in _movies)
-            {
-                if (item.Id == id)
-                {
-                    _movies.Remove(item);
-                    return;
-                }
-            }
+            var movie = _movies.FirstOrDefault(x => x.Id == id);
+            if (movie != null)
+                _movies.Remove(movie);
+            //foreach (var item in _movies)
+            //{
+            //    if (item.Id == id)
+            //    {
+            //        _movies.Remove(item);
+            //        return;
+            //    }
+            //}
         }
 
         /// <summary>Gets a movie from the database.</summary>
@@ -101,12 +117,16 @@ namespace MovieLib.Memory
             // Need to clone movies
             //var items = new Movie[_movies.Count];
             //var index = 0;
-            foreach (var movie in _movies)
-            {
-                //System.Diagnostics.Debug.WriteLine($"Returning {movie.Title}");
-                yield return movie.Copy();
-            }
-            //items[index++] = movie.Copy();
+
+            //Approach 1
+            //foreach (var movie in _movies)
+            //{
+            //    //System.Diagnostics.Debug.WriteLine($"Returning {movie.Title}");
+            //    yield return movie.Copy();
+            //}
+
+            //Approach 2
+            return _movies.Select(x => x.Copy());
 
         }
 
