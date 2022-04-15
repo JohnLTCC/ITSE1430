@@ -10,20 +10,13 @@ namespace MovieLib
     /// <summary> Represents a movie. </summary>
     public class Movie : IValidatableObject
     {
-        //Fields - where data is stored
-
         public const int MinimumReleaseYear = 1900;
-        //public readonly DateTime MinimumReleaseDate = new DateTime(1900, 1, 1);
 
         /// <summary> Gets or sets the title of the movie. </summary>
         public string Title
         {
-            //get { return !String.IsNullOrEmpty(_title) ? _title : ""; }
-            //get { return (_title != null) ? _title : ""; }
-            get { return _title ?? ""; } // null coalescing ::= E ?? E
-
-            //set { _title = (value ?? "").Trim(); }
-            set { _title = value?.Trim(); }
+            get => _title ?? "";
+            set => _title = value?.Trim();
         }
         private string _title;
 
@@ -42,8 +35,8 @@ namespace MovieLib
         /// </summary>
         public string Rating
         {
-            get { return _rating ?? ""; }
-            set { _rating = value; }
+            get => _rating ?? ""; 
+            set => _rating = value; 
         }
         private string _rating;
 
@@ -52,8 +45,8 @@ namespace MovieLib
         /// </summary>
         public string Genre
         {
-            get { return _genre ?? ""; }
-            set { _genre = value; }
+            get => _genre ?? "";
+            set => _genre = value;
         }
         private string _genre;
 
@@ -67,54 +60,28 @@ namespace MovieLib
         /// </summary>
         public string Description
         {
-            get { return _description ?? ""; }
-            set { _description = value; }
+            get => _description ?? "";
+            set => _description = value;
         }
         private string _description;
 
         //BW <= 1939
         //calculated property
-        public bool IsBlackAndWhite 
-        {
-            get { return ReleaseYear <= 1939; }
-        }
+        public bool IsBlackAndWhite => ReleaseYear <= 1939;
 
         public int Id { get; set; }
 
-        public Movie Copy ()
-        {
-            /* Object initializer syntax
-            *var item = new Movie();
-            *item.Id = Id;
-            *item.Title = Title;
-            *item.Description = Description;
-            *item.Duration = Duration;
-            *item.ReleaseYear = ReleaseYear;
-            *item.Genre = Genre;
-            *item.Rating = Rating;
-            *item.IsClassic = IsClassic;
-            */
+        public Movie Copy () => new Movie() {
+            Id = Id,
+            Title = Title,
+            Description = Description,
+            Duration = Duration,
+            ReleaseYear = ReleaseYear,
+            Genre = Genre,
+            Rating = Rating,
+            IsClassic = IsClassic
+        };
 
-            //return item;
-
-            // Object initializer syntax
-            // Only works with new
-            /* 1. Remove smicolon ad curlies
-             * 2. Indent for readablity
-             * 3. Replace semicolon with comas
-             * 4. Removce instance name
-             */
-            return new Movie() {
-                Id = Id,
-                Title = Title,
-                Description = Description,
-                Duration = Duration,
-                ReleaseYear = ReleaseYear,
-                Genre = Genre,
-                Rating = Rating,
-                IsClassic = IsClassic
-            };
-        }
 
         public void CopyFrom(Movie source)
         {
@@ -127,10 +94,8 @@ namespace MovieLib
             IsClassic = source.IsClassic;
         }
 
-        public override string ToString ()
-        {
-            return $"{Title} ({ReleaseYear})";
-        }
+        //Expression body
+        public override string ToString () => $"{Title} ({ReleaseYear})";
 
         public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
         {

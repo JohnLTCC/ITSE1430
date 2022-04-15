@@ -57,14 +57,17 @@ namespace MovieLib.WinHost
                     return;
 
                 // Saves the movie
-                var error = _movies.Add(dlg.Movie);
-                if (String.IsNullOrEmpty(error))
-                {
-                    UpdateUI();
-                    return;
-                };
+                //var error = _movies.Add(dlg.Movie);
+                //if (String.IsNullOrEmpty(error))
+                //{
+                //    UpdateUI();
+                //    return;
+                //};
+                _movies.Add(dlg.Movie);
+                UpdateUI();
+                return;
 
-                MessageBox.Show(this, error, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(this, error, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             } while (true);
         }
 
@@ -83,14 +86,17 @@ namespace MovieLib.WinHost
                     return;
 
                 //TODO: Update movie
-                var error = _movies.Update(movie.Id, dlg.Movie);
-                if (String.IsNullOrEmpty(error))
-                {
-                    UpdateUI();
-                    return;
-                }
+                //var error = _movies.Update(movie.Id, dlg.Movie);
+                //if (String.IsNullOrEmpty(error))
+                //{
+                //    UpdateUI();
+                //    return;
+                //}
+                _movies.Update(movie.Id, dlg.Movie);
+                UpdateUI();
+                return;
 
-                MessageBox.Show(this, error, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(this, error, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             } while (true);
         }
 

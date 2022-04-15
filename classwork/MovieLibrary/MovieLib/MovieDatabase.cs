@@ -17,25 +17,28 @@ namespace MovieLib
         /// <paramref name="movie"/> is not valid.
         /// A movie with the same title already exists.
         /// </remarks>
-        public string Add ( Movie movie )
+        public Movie Add ( Movie movie )
         {
+            //Raise an error using throw - only works with exceptions
             // Validation
             if (movie == null)
-                return "Movie cannot be null.";
+                throw new ArgumentNullException(nameof(movie));
+            //movie = movie ?? throw new ArgumentNullException(nameof(movie));
 
+            ObjectValidator.ValidateObject(movie);
             //TODO: Fix Validation message
-            if (!ObjectValidator.TryValidateObject(movie, out var errors))
-                return "Movie is invalid";
+            //if (!ObjectValidator.TryValidateObject(movie, out var errors))
+            //    return "Movie is invalid";
 
             //Title must be unique
             var existing = FindByName(movie.Title);
             if (existing != null)
-                return "Movie must be unique.";
+                throw new ArgumentException("Movie must be unique", nameof(movie));
 
             // Add movie
             var newMovie = AddCore(movie);
             movie.Id = newMovie.Id;
-            return "";
+            return newMovie;
         }
 
         /// <summary>
@@ -52,44 +55,38 @@ namespace MovieLib
         /// A movie with the same title already exists
         /// The movie cannot be found
         /// </remarks>
-        public string Update ( int id, Movie movie )
+        public void Update ( int id, Movie movie )
         {
             // Validation
             if (id <= 0)
-                return "ID must be greater than or equal to 0.";
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than 0");
             if (movie == null)
-                return "Movie cannot be null.";
+                throw new ArgumentNullException(nameof(movie));
 
-            if (!ObjectValidator.TryValidateObject(movie, out var errors))
-                return "Movie is invalid";
-            //var error = movie.Validate();
-            //if (!String.IsNullOrEmpty(error))
-            //    return error;
+            ObjectValidator.ValidateObject(movie);
 
             //Title must be unique
             var existing = FindByName(movie.Title);
             if (existing != null && existing.Id != id)
-                return "Movie must be unique.";
+                throw new ArgumentException("Movie must be unique", nameof(movie));
 
             //Make sure movie exists
             existing = GetCore(id);
             if (existing == null)
-                return "Movie does not exist";
+                throw new ArgumentNullException(nameof(movie));
 
             // Updates movie
             UpdateCore(id, movie);
-            return "";
         }
 
         /// <summary>Deletes a movie.</summary>
         /// <param name="id">The ID of the movie to delete.</param>
-        public string Delete ( int id )
+        public void Delete ( int id )
         {
             if (id <= 0)
-                return "ID must be > 0.";
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than 0");
 
             DeleteCore(id);
-            return "";
         }
 
         /// <summary>Gets a movie from the database.</summary>
@@ -98,17 +95,14 @@ namespace MovieLib
         public Movie Get ( int id )
         {
             if (id <= 0)
-                return null;
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than 0");
 
             return GetCore(id);
         }
 
         /// <summary>Gets all the movies.</summary>
         /// <returns>The movies in the database.</returns>
-        public IEnumerable<Movie> GetAll ()
-        {
-            return GetAllCore();
-        }
+        public IEnumerable<Movie> GetAll () => GetAllCore();
 
         #region Abstract members
         /// <summary>Adds a movie to the database</summary>

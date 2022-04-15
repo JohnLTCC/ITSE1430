@@ -16,7 +16,6 @@ namespace MovieLib.Memory
             _movies.Add(movie.Copy()); ;
             return movie;
         }
-
         /// <summary>Finds a movie by its name.</summary>
         /// <param name="name">Name of the movie to find.</param>
         /// <returns>The movie with the name used.</returns>
@@ -39,7 +38,6 @@ namespace MovieLib.Memory
                    where String.Equals(m.Title, name, StringComparison.CurrentCultureIgnoreCase)
                    select m).FirstOrDefault();
         }
-
         /// <summary>Finds a movie by its id.</summary>
         /// <param name="id">Id for the movie to find.</param>
         /// <returns>The movie matching the id.</returns>

@@ -4,10 +4,10 @@ namespace MovieLib
 {
     public interface IMovieDatabase
     {
-        string Add ( Movie movie );
-        string Delete ( int id );
+        Movie Add ( Movie movie );
+        void Delete ( int id );
         Movie Get ( int id );
         IEnumerable<Movie> GetAll ();
-        string Update ( int id, Movie movie );
+        void Update ( int id, Movie movie );
     }
 }

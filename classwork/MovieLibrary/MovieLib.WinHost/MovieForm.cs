@@ -70,7 +70,6 @@ namespace MovieLib.WinHost
                 Close();
             }
         }
-
         private void OnValidateTitle ( object sender, CancelEventArgs e )
         {
             var control = sender as Control;
