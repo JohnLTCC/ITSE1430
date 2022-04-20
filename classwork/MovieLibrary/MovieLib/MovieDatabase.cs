@@ -26,19 +26,31 @@ namespace MovieLib
             //movie = movie ?? throw new ArgumentNullException(nameof(movie));
 
             ObjectValidator.ValidateObject(movie);
-            //TODO: Fix Validation message
             //if (!ObjectValidator.TryValidateObject(movie, out var errors))
             //    return "Movie is invalid";
 
             //Title must be unique
             var existing = FindByName(movie.Title);
             if (existing != null)
-                throw new ArgumentException("Movie must be unique", nameof(movie));
+                //throw new ArgumentException("Movie must be unique", nameof(movie));
+            throw new InvalidOperationException("Movie must be unique");
 
             // Add movie
-            var newMovie = AddCore(movie);
-            movie.Id = newMovie.Id;
-            return newMovie;
+            try
+            {
+                var newMovie = AddCore(movie);
+                return newMovie;
+            } catch (InvalidOperationException)
+            {
+                //Pass through
+                // NEVER DO THIS -> throw e;
+                throw;
+            } catch (Exception e)
+            {
+                //Wrap it in a generic exception
+                throw new Exception("Error adding movie", e);
+            };
+            //movie.Id = newMovie.Id;
         }
 
         /// <summary>

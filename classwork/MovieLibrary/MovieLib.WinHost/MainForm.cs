@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,7 +19,6 @@ namespace MovieLib.WinHost
         //Extension methods
         // Extend a type with a new method
         // Works with any type
-        //
 
         protected override void OnLoad ( EventArgs e )
         {
@@ -63,9 +63,21 @@ namespace MovieLib.WinHost
                 //    UpdateUI();
                 //    return;
                 //};
-                _movies.Add(dlg.Movie);
-                UpdateUI();
-                return;
+                try
+                {
+                    _movies.Add(dlg.Movie);
+                    UpdateUI();
+                    return;
+                } catch (InvalidOperationException) {
+                    MessageBox.Show(this, "Please enter a unique movie name.", "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } catch (ValidationException error)
+                {
+                    var msg = error.ValidationResult.ErrorMessage;
+                    MessageBox.Show(this, msg, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } catch (Exception error)
+                {
+                    MessageBox.Show(this, error.Message, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                };
 
                 //MessageBox.Show(this, error, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             } while (true);
@@ -85,16 +97,21 @@ namespace MovieLib.WinHost
                 if (dlg.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                //TODO: Update movie
                 //var error = _movies.Update(movie.Id, dlg.Movie);
                 //if (String.IsNullOrEmpty(error))
                 //{
                 //    UpdateUI();
                 //    return;
                 //}
-                _movies.Update(movie.Id, dlg.Movie);
-                UpdateUI();
-                return;
+                try
+                {
+                    _movies.Update(movie.Id, dlg.Movie);
+                    UpdateUI();
+                    return;
+                } catch (Exception error)
+                {
+                    MessageBox.Show(this, error.Message, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 //MessageBox.Show(this, error, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             } while (true);
@@ -109,8 +126,14 @@ namespace MovieLib.WinHost
             if (MessageBox.Show(this, $"Are you sure you want to delete {movie.Title}?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
-            _movies.Delete(movie.Id);
-            UpdateUI();
+            try
+            {
+                _movies.Delete(movie.Id);
+                UpdateUI();
+            } catch (Exception error)
+            {
+                MessageBox.Show(this, error.Message, "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private Movie GetSelectedMovie ()
