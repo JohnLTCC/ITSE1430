@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Product>Adventure Game</Product>
+    <Authors>John Lobsinger</Authors>
+    <Company>ITSE-1430 Lab 3</Company>
+    <Version>1.0.0</Version>
+    <Copyright>John Lobsinger</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JohnLobsinger.AdventureGame\JohnLobsinger.AdventureGame.csproj" />
+  </ItemGroup>
+
+</Project>
