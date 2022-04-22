@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Forms;
-
-using MovieLib.Memory;
+using MovieLib.IO;
 
 namespace MovieLib.WinHost
 {
@@ -32,9 +31,9 @@ namespace MovieLib.WinHost
                 {
                     //Seeds the database
                     _movies.Seed();
-                    UpdateUI();
                 }
             }
+            UpdateUI();
         }
 
         private void OnFileExit ( object sender, EventArgs e )
@@ -182,6 +181,6 @@ namespace MovieLib.WinHost
                 e.Cancel = true;
         }
 
-        private readonly IMovieDatabase _movies = new MemoryMovieDatabase();
+        private readonly IMovieDatabase _movies = new FileMovieDatabase("movies.txt");
     }
 }
