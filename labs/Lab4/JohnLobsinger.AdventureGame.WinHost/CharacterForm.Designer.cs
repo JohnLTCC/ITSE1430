@@ -158,10 +158,14 @@ namespace JohnLobsinger.AdventureGame.WinHost
             this._comboBoxProfession.FormattingEnabled = true;
             this._comboBoxProfession.Items.AddRange(new object[] {
             "Warrior",
+            "Paladin",
             "Hunter",
             "Rogue",
+            "Priest",
             "Mage",
-            "Priest"});
+            "Warlock",
+            "Shaman",
+            "Druid"});
             this._comboBoxProfession.Location = new System.Drawing.Point(85, 41);
             this._comboBoxProfession.Name = "_comboBoxProfession";
             this._comboBoxProfession.Size = new System.Drawing.Size(99, 23);
@@ -174,10 +178,13 @@ namespace JohnLobsinger.AdventureGame.WinHost
             this._comboBoxRace.FormattingEnabled = true;
             this._comboBoxRace.Items.AddRange(new object[] {
             "Human",
-            "Elf",
+            "Night Elf",
             "Dwarf",
+            "Gnome",
             "Orc",
-            "Halfling"});
+            "Tauren",
+            "Undead",
+            "Troll"});
             this._comboBoxRace.Location = new System.Drawing.Point(85, 70);
             this._comboBoxRace.Name = "_comboBoxRace";
             this._comboBoxRace.Size = new System.Drawing.Size(99, 23);

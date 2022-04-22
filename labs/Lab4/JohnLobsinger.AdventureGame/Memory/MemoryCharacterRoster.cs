@@ -87,10 +87,12 @@ namespace JohnLobsinger.AdventureGame.Memory
                     select m).FirstOrDefault();
         }
 
-        private Character FindById ( int id )
-        {
-            return _characters.FirstOrDefault(x => x.Id == id);
-        }
+        /// <summary>
+        /// Finds a character by it's id.
+        /// </summary>
+        /// <param name="id">The id you want to search with</param>
+        /// <returns>The character matching the id.</returns>
+        private Character FindById ( int id ) => _characters.FirstOrDefault(x => x.Id == id);
             
 
         private int _nextId = 0;

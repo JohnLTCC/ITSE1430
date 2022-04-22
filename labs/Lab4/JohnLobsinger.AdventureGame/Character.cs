@@ -92,7 +92,7 @@ namespace JohnLobsinger.AdventureGame
         }
         public override string ToString ()
         {
-            return $"{Name} ({Profession})";
+            return $"{Name} ({Race} {Profession})";
         }
         public int Id { get; set; }
         public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
