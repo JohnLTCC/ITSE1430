@@ -67,11 +67,11 @@ namespace JohnLobsinger.AdventureGame.WinHost
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 44);
+            this.label2.Location = new System.Drawing.Point(45, 44);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 15);
+            this.label2.Size = new System.Drawing.Size(34, 15);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Profession";
+            this.label2.Text = "Class";
             this.label2.UseWaitCursor = true;
             // 
             // label3

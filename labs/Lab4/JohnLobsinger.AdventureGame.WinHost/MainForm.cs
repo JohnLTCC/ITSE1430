@@ -99,7 +99,7 @@ namespace JohnLobsinger.AdventureGame.WinHost
         {
             _lstCharacters.Items.Clear();
             var characters = from m in _characters.GetAll()
-                         orderby m.Name, m.Profession
+                         orderby m.Name, m.Class
                          select m;
             _lstCharacters.Items.AddRange(characters.ToArray());
         }

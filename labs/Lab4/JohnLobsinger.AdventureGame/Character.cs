@@ -30,12 +30,12 @@ namespace JohnLobsinger.AdventureGame
         /// <summary>
         /// Reads and writes the profession of the character
         /// </summary>
-        public string Profession
+        public string Class
         {
-            get { return _profession ?? ""; }
-            set { _profession = value; }
+            get { return _class ?? ""; }
+            set { _class = value; }
         }
-        private string _profession;
+        private string _class;
         /// <summary>
         /// Reads and writes the race of the character
         /// </summary>
@@ -74,7 +74,7 @@ namespace JohnLobsinger.AdventureGame
         {
             if (String.IsNullOrEmpty(Name))
                 return "Name is required.";
-            if (String.IsNullOrEmpty(Profession))
+            if (String.IsNullOrEmpty(Class))
                 return "Profession is required.";
             if (String.IsNullOrEmpty(Race))
                 return "Race is required.";
@@ -92,15 +92,15 @@ namespace JohnLobsinger.AdventureGame
         }
         public override string ToString ()
         {
-            return $"{Name} ({Race} {Profession})";
+            return $"{Name} ({Race} {Class})";
         }
         public int Id { get; set; }
         public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
         {
             if (String.IsNullOrEmpty(_name))
                 yield return new ValidationResult("Name is required", new[] { nameof(Name) });
-            if (String.IsNullOrEmpty(_profession))
-                yield return new ValidationResult("Profession is required", new[] { nameof(Profession) });
+            if (String.IsNullOrEmpty(_class))
+                yield return new ValidationResult("Profession is required", new[] { nameof(Class) });
             if (String.IsNullOrEmpty(_race))
                 yield return new ValidationResult($"Race is required", new[] { nameof(Race) });
             if (Strength > 100 || Strength < 1)
@@ -118,7 +118,7 @@ namespace JohnLobsinger.AdventureGame
             Id = Id,
             Name = Name,
             Description = Description,
-            Profession = Profession,
+            Class = Class,
             Race = Race,
             Strength = Strength,
             Agility = Agility,
@@ -132,7 +132,7 @@ namespace JohnLobsinger.AdventureGame
             Id = source.Id;
             Name = source.Name;
             Description = source.Description;
-            Profession = source.Profession;
+            Class = source.Class;
             Race = source.Race;
             Strength = source.Strength;
             Agility = source.Agility;

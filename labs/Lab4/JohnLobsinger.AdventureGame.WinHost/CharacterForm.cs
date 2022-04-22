@@ -25,7 +25,7 @@ namespace JohnLobsinger.AdventureGame.WinHost
             if (Character != null)
             {
                 _txtName.Text = Character.Name;
-                _comboBoxProfession.Text = Character.Profession;
+                _comboBoxProfession.Text = Character.Class;
                 _comboBoxRace.Text = Character.Race;
                 _txtStrength.Text = Character.Strength.ToString();
                 _txtAgility.Text = Character.Agility.ToString();
@@ -47,7 +47,7 @@ namespace JohnLobsinger.AdventureGame.WinHost
 
             // Sets the properties
             character.Name = _txtName.Text;
-            character.Profession = _comboBoxProfession.Text;
+            character.Class = _comboBoxProfession.Text;
             character.Race = _comboBoxRace.Text;
             character.Strength = ReadAsInt32(_txtStrength, -1);
             character.Agility = ReadAsInt32(_txtAgility, -1);
