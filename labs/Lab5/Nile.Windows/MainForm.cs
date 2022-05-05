@@ -2,7 +2,9 @@
  * ITSE 1430
  */
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Forms;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace Nile.Windows
@@ -39,10 +41,20 @@ namespace Nile.Windows
             if (child.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            //TODO: Handle errors
-            //Save product
-            _database.Add(child.Product);
-            UpdateList();
+            //Handle errors
+            try
+            {
+                //Save product
+                _database.Add(child.Product);
+                UpdateList();
+            }  catch (ValidationException error)
+            {
+                var msg = error.ValidationResult.ErrorMessage;
+                MessageBox.Show(this, msg, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } catch (Exception error)
+            {
+                MessageBox.Show(this, error.Message, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
         }
 
         private void OnProductEdit( object sender, EventArgs e )
@@ -105,10 +117,16 @@ namespace Nile.Windows
                                 "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
-            //TODO: Handle errors
-            //Delete product
-            _database.Remove(product.Id);
-            UpdateList();
+            //Handle errors
+            try
+            {
+                //Delete product
+                _database.Remove(product.Id);
+                UpdateList();
+            } catch (Exception error)
+            {
+                MessageBox.Show(this, error.Message, "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void EditProduct ( Product product )
@@ -118,10 +136,16 @@ namespace Nile.Windows
             if (child.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            //TODO: Handle errors
-            //Save product
-            _database.Update(child.Product);
-            UpdateList();
+            //Handle errors
+            try
+            {
+                //Save product
+                _database.Update(child.Product);
+                UpdateList();
+            } catch (Exception error)
+            {
+                MessageBox.Show(this, error.Message, "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private Product GetSelectedProduct ()
@@ -134,15 +158,26 @@ namespace Nile.Windows
 
         private void UpdateList ()
         {
-            //TODO: Handle errors
-
-            _bsProducts.DataSource = _database.GetAll();
-        }
+            //Handle errors
+            try
+            {
+                _bsProducts.DataSource = _database.GetAll();
+            } catch (Exception error)
+            {
+                MessageBox.Show(this, error.Message, "Failed to get products", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }   
 
         private string GetConnectionString ( string name )
-                => Program.Configuration.GetConnectionString(name);        
+                => Program.Configuration.GetConnectionString(name);
 
-        private readonly IProductDatabase _database = new Nile.Stores.MemoryProductDatabase();
+        private readonly IProductDatabase _database = new Nile.Stores.Sql.SqlProductDatabase(Program.Configuration.GetConnectionString("ProductDatabase"));
         #endregion
+
+        private void OnAbout ( object sender, EventArgs e )
+        {
+            var form = new AboutBox();
+            form.ShowDialog(this);
+        }
     }
 }
