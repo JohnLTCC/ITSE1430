@@ -23,7 +23,7 @@ namespace Nile.Windows
         {
             base.OnLoad(e);
 
-            _gridProducts.AutoGenerateColumns = false;
+            _gridProducts.AutoGenerateColumns = true;
 
             UpdateList();
         }
