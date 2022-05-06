@@ -32,8 +32,9 @@ namespace MovieLib
             //Title must be unique
             var existing = FindByName(movie.Title);
             if (existing != null)
-                //throw new ArgumentException("Movie must be unique", nameof(movie));
-            throw new InvalidOperationException("Movie must be unique");
+                throw new InvalidOperationException("Movie must be unique");
+            //throw new ArgumentException("Movie must be unique", nameof(movie));
+
 
             // Add movie
             try

@@ -26,6 +26,7 @@ namespace MovieLib.WebApp.Models
         [Range(0, Int32.MaxValue)]
         public int Duration { get; set; }
         
+        [Display(Name = "Release Year")]
         [Range(Movie.MinimumReleaseYear, 2100)]
         public int ReleaseYear { get; set; } = Movie.MinimumReleaseYear;
         
@@ -35,10 +36,21 @@ namespace MovieLib.WebApp.Models
         [Required(AllowEmptyStrings = false)]
         public string Genre { get; set; }
         
+        [Display(Name = "Is Classic")]
         public bool IsClassic { get; set; }
         
         public string Description { get; set; }
         
         public int Id { get; set; }
+
+        public Movie toMovie () => new Movie() {
+            Title       = Title,
+            Duration    =  Duration,
+            ReleaseYear = ReleaseYear,
+            Rating      = Rating,
+            Genre       = Genre,
+            Description = Description,
+            IsClassic   = IsClassic,
+        };
     }
 }
