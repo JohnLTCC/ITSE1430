@@ -14,9 +14,21 @@ namespace Nile.Stores
         /// <returns>The added product.</returns>
         public Product Add ( Product product )
         {
-            //TODO: Check arguments
+            //Check arguments
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
 
-            //TODO: Validate product
+            //Validate product
+            ObjectValidator.ValidateObject(product);
+
+            //Check for duplicates
+            var list = GetAllCore();
+            foreach(var item in list)
+            {
+                if (item.Name == product.Name)
+                    throw new InvalidOperationException("Product name mmust be unique");
+            }
+            
 
             //Emulate database by storing copy
             return AddCore(product);
@@ -26,7 +38,9 @@ namespace Nile.Stores
         /// <returns>The product, if it exists.</returns>
         public Product Get ( int id )
         {
-            //TODO: Check arguments
+            //Check arguments
+            if (id < 0)
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than 0");
 
             return GetCore(id);
         }
@@ -42,7 +56,9 @@ namespace Nile.Stores
         /// <param name="id">The product to remove.</param>
         public void Remove ( int id )
         {
-            //TODO: Check arguments
+            //Check arguments
+            if (id < 0)
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than 0");
 
             RemoveCore(id);
         }
@@ -52,12 +68,25 @@ namespace Nile.Stores
         /// <returns>The updated product.</returns>
         public Product Update ( Product product )
         {
-            //TODO: Check arguments
+            //Check arguments
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
 
-            //TODO: Validate product
+            //Validate product
+            ObjectValidator.ValidateObject(product);
+
+            //Check for duplicates
+            var list = GetAllCore();
+            foreach (var item in list)
+            {
+                if (item.Name == product.Name)
+                    throw new InvalidOperationException("Product name mmust be unique");
+            }
 
             //Get existing product
             var existing = GetCore(product.Id);
+            if (existing == null)
+                throw new InvalidOperationException(nameof(product));
 
             return UpdateCore(existing, product);
         }
